@@ -1,0 +1,12 @@
+diff --git libgralloc/ionalloc.cpp libgralloc/ionalloc.cpp
+index a04a6b7..a5a5e50 100644
+--- libgralloc/ionalloc.cpp
++++ libgralloc/ionalloc.cpp
+@@ -34,6 +34,7 @@
+ #include <fcntl.h>
+ #include <cutils/log.h>
+ #include <errno.h>
++#include <linux/ion.h>
+ #include "gralloc_priv.h"
+ #include "ionalloc.h"
+ 

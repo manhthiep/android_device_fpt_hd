@@ -1,3 +1,3 @@
 
 PRODUCT_MAKEFILES := \
-    $(LOCAL_DIR)/msm7627a.mk
+    $(LOCAL_DIR)/fpt_hd.mk

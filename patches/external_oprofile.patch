@@ -1,0 +1,13 @@
+diff --git libpp/format_output.h libpp/format_output.h
+index b6c4592..786725b 100644
+--- libpp/format_output.h
++++ libpp/format_output.h
+@@ -91,7 +91,7 @@ protected:
+ 		symbol_entry const & symbol;
+ 		sample_entry const & sample;
+ 		size_t pclass;
+-		mutable counts_t & counts;
++		/*mutable*/ counts_t & counts;
+ 		extra_images const & extra;
+ 		double diff;
+ 	};

@@ -1,0 +1,96 @@
+diff --git DirectVolume.cpp DirectVolume.cpp
+index 4acee76..cc29333 100644
+--- DirectVolume.cpp
++++ DirectVolume.cpp
+@@ -31,7 +31,7 @@
+ #include "ResponseCode.h"
+ #include "cryptfs.h"
+ 
+-// #define PARTITION_DEBUG
++#define PARTITION_DEBUG
+ 
+ DirectVolume::DirectVolume(VolumeManager *vm, const char *label,
+                            const char *mount_point, int partIdx) :
+diff --git DirectVolume.h DirectVolume.h
+index de1ed8b..eabb659 100644
+--- DirectVolume.h
++++ DirectVolume.h
+@@ -21,13 +21,15 @@
+ 
+ #include "Volume.h"
+ 
+-#define MAX_PARTS 4
++//#define MAX_PARTS 4
++#define MAX_PARTS 22
+ 
+ typedef android::List<char *> PathCollection;
+ 
+ class DirectVolume : public Volume {
+ public:
+-    static const int MAX_PARTITIONS = 4;
++    /*static const int MAX_PARTITIONS = 4;*/
++    static const int MAX_PARTITIONS = 22;
+ protected:
+     PathCollection *mPaths;
+     int            mDiskMajor;
+diff --git main.cpp main.cpp
+index 5924fe4..67b956e 100644
+--- main.cpp
++++ main.cpp
+@@ -27,7 +27,7 @@
+ #define LOG_TAG "Vold"
+ 
+ #include "cutils/log.h"
+-
++#include "cutils/properties.h"
+ #include "VolumeManager.h"
+ #include "CommandListener.h"
+ #include "NetlinkManager.h"
+@@ -162,11 +162,15 @@ static int process_config(VolumeManager *vm) {
+     FILE *fp;
+     int n = 0;
+     char line[255];
+-
++#if 1
+     if (!(fp = fopen("/etc/vold.fstab", "r"))) {
+         return -1;
+     }
+-
++#else
++    if (!(fp = fopen("/etc/vold.fstab_use_tflash", "r"))) {
++        return -1;
++    }
++#endif
+     while(fgets(line, sizeof(line), fp)) {
+         const char *delim = " \t";
+         char *save_ptr;
+@@ -204,13 +208,24 @@ static int process_config(VolumeManager *vm) {
+                 SLOGE("Partition must either be 'auto' or 1 based index instead of '%s'", part);
+                 goto out_syntax;
+             }
+-
+-            if (!strcmp(part, "auto")) {
+-                dv = new DirectVolume(vm, label, mount_point, -1);
++            SLOGE("Mounting '%s'", label);
++            if (!strcmp(label, "sdcard")) {
++                SLOGE("label='sdcard'");
++                char sdcard_partition[PROPERTY_VALUE_MAX];
++                property_get("ro.emmc.sdcard.partition", sdcard_partition, "");
++                SLOGE("sdcard_partition='%s'", sdcard_partition);
++                if (strcmp(sdcard_partition, "")) {
++                    dv = new DirectVolume(vm, label, mount_point, atoi(sdcard_partition));
++                } else {
++                    dv = new DirectVolume(vm, label, mount_point, -1);
++                }
+             } else {
+-                dv = new DirectVolume(vm, label, mount_point, atoi(part));
++                if (!strcmp(part, "auto")) {
++                    dv = new DirectVolume(vm, label, mount_point, -1);
++                } else {
++                    dv = new DirectVolume(vm, label, mount_point, atoi(part));
++                }
+             }
+-
+             while ((sysfs_path = strtok_r(NULL, delim, &save_ptr))) {
+                 if (*sysfs_path != '/') {
+                     /* If the first character is not a '/', it must be flags */

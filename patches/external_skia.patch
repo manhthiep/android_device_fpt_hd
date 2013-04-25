@@ -1,0 +1,13 @@
+diff --git Android.mk Android.mk
+index d7b0f8d..5ac93aa 100644
+--- Android.mk
++++ Android.mk
+@@ -264,7 +264,7 @@ LOCAL_STATIC_LIBRARIES := \
+ 	libwebp-encode
+ 
+ ifeq ($(BOARD_USES_QCOM_HARDWARE),true)
+-	LOCAL_WHOLE_STATIC_LIBRARIES += libqc-skia
++	#LOCAL_WHOLE_STATIC_LIBRARIES += libqc-skia
+ endif
+ 
+ 

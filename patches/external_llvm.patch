@@ -1,0 +1,52 @@
+diff --git lib/Support/Mutex.cpp lib/Support/Mutex.cpp
+index 8874e94..4327c92 100644
+--- lib/Support/Mutex.cpp
++++ lib/Support/Mutex.cpp
+@@ -13,6 +13,8 @@
+ 
+ #include "llvm/Config/config.h"
+ #include "llvm/Support/Mutex.h"
++#undef ENABLE_THREADS
++#undef HAVE_PTHREAD_H
+ 
+ //===----------------------------------------------------------------------===//
+ //=== WARNING: Implementation here must contain only TRULY operating system
+diff --git lib/Support/Signals.cpp lib/Support/Signals.cpp
+index a117893..e3c0b12 100644
+--- lib/Support/Signals.cpp
++++ lib/Support/Signals.cpp
+@@ -24,7 +24,7 @@ using namespace sys;
+ //===----------------------------------------------------------------------===//
+ 
+ }
+-
++#undef HAVE_DLFCN_H
+ // Include the platform-specific parts of this class.
+ #ifdef LLVM_ON_UNIX
+ #include "Unix/Signals.inc"
+diff --git lib/Support/Threading.cpp lib/Support/Threading.cpp
+index 8f0bb93..8eecc27 100644
+--- lib/Support/Threading.cpp
++++ lib/Support/Threading.cpp
+@@ -17,6 +17,8 @@
+ #include "llvm/Config/config.h"
+ #include <cassert>
+ 
++#undef LLVM_MULTITHREADED
++
+ using namespace llvm;
+ 
+ static bool multithreaded_mode = false;
+diff --git llvm-host-build.mk llvm-host-build.mk
+index 5219efd..9332c5a 100644
+--- llvm-host-build.mk
++++ llvm-host-build.mk
+@@ -9,6 +9,8 @@ LOCAL_CFLAGS :=	\
+ 	-Wno-unused-parameter	\
+ 	-Wwrite-strings	\
+ 	$(LOCAL_CFLAGS)
++	
++LOCAL_LDLIBS := -lpthread -ldl
+ 
+ ifeq ($(LLVM_ENABLE_ASSERTION),true)
+ LOCAL_CFLAGS :=	\

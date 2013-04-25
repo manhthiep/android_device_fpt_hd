@@ -1,0 +1,37 @@
+diff --git rootdir/init.rc rootdir/init.rc
+index 811ba36..923be28 100755
+--- rootdir/init.rc
++++ rootdir/init.rc
+@@ -120,10 +120,17 @@ on emmc-fs
+     wait /dev/block/mmcblk0p12
+     mount ext4 /dev/block/mmcblk0p12 /system rw barrier=1
+     wait /dev/block/mmcblk0p13
+-    exec /system/bin/e2fsck -p /dev/block/mmcblk0p13
+-    mount ext4 /dev/block/mmcblk0p13 /data nosuid nodev barrier=1 noauto_da_alloc
+-    mount ext4 /dev/block/mmcblk0p14 /persist nosuid nodev barrier=1
+-    mount ext4 /dev/block/mmcblk0p15 /cache nosuid nodev barrier=1
++    #exec /system/bin/e2fsck -p /dev/block/mmcblk0p13
++    # lichm modified for restore data partition on 20120907
++    exec /system/bin/e2fsck -y /dev/block/mmcblk0p13
++    #mount ext4 /dev/block/mmcblk0p13 /data nosuid nodev barrier=1 noauto_da_alloc
++    # lichm 20120503 modified for larger userdata partiton size
++    #mount ext4 /dev/block/mmcblk0p13 /data rw nosuid nodev barrier=1 noauto_da_alloc,noinit_itable,nodelalloc
++    #mount ext4 /dev/block/mmcblk0p14 /persist nosuid nodev barrier=1
++    #mount ext4 /dev/block/mmcblk0p15 /cache nosuid nodev barrier=1
++    mount ext4 /dev/block/mmcblk0p13 /data rw nosuid nodev barrier=1 noauto_da_alloc,noinit_itable,nodelalloc
++    mount ext4 /dev/block/mmcblk0p14 /persist rw nosuid nodev barrier=1
++    mount ext4 /dev/block/mmcblk0p15 /cache rw nosuid nodev barrier=1
+ 
+ on post-fs
+     # once everything is setup, no need to modify /
+@@ -182,8 +189,8 @@ on post-fs-data
+     # give system access to wpa_supplicant.conf for backup and restore
+     mkdir /data/misc/wifi 0770 wifi wifi
+     chmod 0660 /data/misc/wifi/wpa_supplicant.conf
+-    mkdir /data/local 0751 root root
+-    mkdir /data/local/tmp 0771 shell shell
++    mkdir /data/local 0775 root root
++    mkdir /data/local/tmp 0775 shell shell
+     mkdir /data/data 0771 system system
+     mkdir /data/app-private 0771 system system
+     mkdir /data/app 0771 system system

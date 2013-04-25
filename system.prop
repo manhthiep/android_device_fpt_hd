@@ -1,6 +1,26 @@
 #
-# system.prop for surf
+# system.prop for msm7627a
 #
+
+tyq.debug.composition.type=gpu
+ro.sf.lcd_density=240
+ro.product.uamodel=
+persist.dsds.enabled=true
+ro.sf.tp_type=2
+persist.radio.net_pref_0=0
+persist.radio.net_pref_1=1
+
+persist.sys.ty.usb.product=
+ro.ty.sync.time.support=1
+ro.ty.product.version=
+ro.ty.lcdsize=
+ro.ty.emmc=true
+ro.ty.supper.large.font=true
+ro.ty.wappush=true
+ro.ty.shortcutdial=true
+ro.ty.unicombrowser.support=true
+ro.ty.groupmembercopy.support=true
+ro.ty.numberscopy.support=true
 
 rild.libpath=/system/lib/libril-qc-1.so
 rild.libargs=-d /dev/smd0
@@ -16,6 +36,7 @@ persist.rild.nitz_short_ons_3=
 ril.subscription.types=NV,RUIM
 DEVICE_PROVISIONED=1
 keyguard.no_require_sim=1
+# tianyu wangzhzh 20120806 modify for Live Wallpapers Spectrum
 lpa.decode=true
 debug.sf.hw=1
 debug.composition.7x27A.type=mdp
@@ -27,7 +48,9 @@ hwui.render_dirty_regions.8625=true
 debug.enabletr.7x27A=true
 debug.enabletr.7x25A=true
 debug.enabletr.8625=true
-dalvik.vm.heapsize=24m
+#dalvik.vm.heapsize=24m
+
+ty.qulacomm.rev=1050
 
 #
 # system props for the cne module
@@ -44,6 +67,7 @@ persist.cne.rat.acq.retry.tout=0
 persist.cne.fmc.init.time.out=30
 persist.cne.fmc.comm.time.out=130
 persist.cne.fmc.retry=false
+ty_dmesg=
 persist.cne.feature=0
 
 #
@@ -118,7 +142,8 @@ persist.omh.enabled=1
 ro.config.ehrpd=true
 
 # System property for cabl
-ro.qualcomm.cabl=1
+#ro.qualcomm.cabl=1
+ro.qualcomm.cabl=0
 
 #
 #System prop to determine availability of
@@ -139,7 +164,11 @@ ro.fm.mulinst.recording.support=false
 #
 # system props for SD card emulation of emmc partition
 #
-ro.emmc.sdcard.partition=18
+#ro.emmc.sdcard.partition=18
+ro.emmc.sdcard.partition=19
+
+# system props for switch two SD card 
+persist.sys.ty.storage.location=1
 
 #
 # system property to enforce Phone Mode view
@@ -153,6 +182,7 @@ ro.staticwallpaper.pixelformat=RGB_565
 #
 #System prop for disabling the meta data mode for encoder
 #
+#debug.camcorder.disablemeta=1
 debug.camcorder.disablemeta=0
 
 #
@@ -183,3 +213,6 @@ dev.pm.dyn_samplingrate=1
 # On Strider below period is found to improve power numbers for AAC MP4
 #
 dev.pm.dyn_sample_period=700000
+
+# tianyu wangzhzh 20120619 add
+power.webview.DM=0

@@ -55,10 +55,51 @@ ifeq ($(QC_PROP),true)
 else
 #    BOARD_USES_GENERIC_AUDIO := true
     USE_CAMERA_STUB := true
+    
+    BOARD_USES_QCOM_HARDWARE := true
+    DYNAMIC_SHARED_LIBV8SO := true
+    BOARD_USES_ADRENO_200 := true
+    HAVE_ADRENO200_FIRMWARE := true
+    
+    BOARD_USES_QCNE := true
+    USE_OPENGL_RENDERER := true
+    TARGET_USES_MDP3 := true
+    
+    #BOARD_VENDOR_QCOM_GPS_LOC_API_AMSS_VERSION := 50001
+    #BOARD_VENDOR_QCOM_GPS_LOC_API_HARDWARE := default
+    BOARD_CAMERA_LIBRARIES := libcamera
+    BOARD_HAVE_BLUETOOTH := true
+    BOARD_HAVE_QCOM_FM := false
+    PROTEUS_DEVICE_API := true
+    
+    # Define respective statement to true to enable the ATH or WCN WLAN.
+    BOARD_HAS_QCOM_WLAN := true
+    BOARD_HAS_ATH_WLAN := true
+
+    ifeq ($(findstring true,$(BOARD_HAS_ATH_WLAN) $(BOARD_HAS_QCOM_WLAN)),true)
+    BOARD_WPA_SUPPLICANT_DRIVER := NL80211
+    BOARD_HOSTAPD_DRIVER := NL80211
+    WPA_SUPPLICANT_VERSION := VER_2_0_DEV
+    HOSTAPD_VERSION := VER_2_0_DEV
+    WIFI_CFG80211_DRIVER_MODULE_PATH := "/system/lib/modules/cfg80211.ko"
+    WIFI_CFG80211_DRIVER_MODULE_NAME := "cfg80211"
+    WIFI_CFG80211_DRIVER_MODULE_ARG  := ""
+    WIFI_TEST_INTERFACE     := "sta"
+    WIFI_DRIVER_FW_PATH_STA := "sta"
+    WIFI_DRIVER_FW_PATH_AP  := "ap"
+    WIFI_DRIVER_FW_PATH_P2P := "p2p"
+    endif
+
+    ifeq ($(BOARD_HAS_QCOM_WLAN), true)
+    WIFI_SDIO_IF_DRIVER_MODULE_PATH := "/system/lib/modules/librasdioif.ko"
+    WIFI_SDIO_IF_DRIVER_MODULE_NAME := "librasdioif"
+    WIFI_SDIO_IF_DRIVER_MODULE_ARG  := ""
+    BOARD_WLAN_DEVICE := qcwcn
+    endif
 endif # QC_PROP
 
 BOARD_HAVE_BLUETOOTH := true
-BOARD_HAVE_QCOM_FM := true
+BOARD_HAVE_QCOM_FM := false
 TARGET_HAVE_TSLIB := true
 
 TARGET_NO_BOOTLOADER := false
@@ -79,6 +120,9 @@ TARGET_USES_16BPPSURFACE_FOR_OPAQUE := true
 TARGET_CORTEX_CACHE_LINE_32 := true
 TARGET_USE_SPARROW_BIONIC_OPTIMIZATION := true
 
+#TARGET_PREBUILT_KERNEL := device/qcom/msm7627a/prebuilt/kernel
+#TARGET_PREBUILT_RECOVERY_KERNEL := device/qcom/msm7627a/prebuilt/kernel
+
 BOARD_KERNEL_BASE    := 0x00200000
 BOARD_KERNEL_PAGESIZE := 4096
 #Spare size is (BOARD_KERNEL_PAGESIZE>>9)*16
@@ -97,7 +141,8 @@ TARGET_USES_UNCOMPRESSED_KERNEL := false
 
 BOARD_KERNEL_CMDLINE := androidboot.hardware=qcom loglevel=1
 ARCH_ARM_HAVE_TLS_REGISTER := true
-BOARD_EGL_CFG := device/qcom/$(TARGET_PRODUCT)/egl.cfg
+#BOARD_EGL_CFG := device/qcom/$(TARGET_PRODUCT)/egl.cfg
+BOARD_EGL_CFG := device/fpt/hd/egl.cfg
 
 BOARD_NO_SPEAKER := true # msm7627a doesn't have speaker
 BOARD_NO_TOUCHSCREEN := false
@@ -115,3 +160,4 @@ BOARD_HAVE_MXT224_CFG := true
 
 # Signed boot image support
 TARGET_BOOTIMG_SIGNED := true
+
