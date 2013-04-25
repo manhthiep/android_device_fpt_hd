@@ -1,2 +1,2 @@
-android_device_fpt_hd
-=====================
+Device configuration for FPT HD
+(forked from git://codeaurora.org/platform/vendor/qcom/msm7627a.git)
